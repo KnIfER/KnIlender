@@ -4194,13 +4194,38 @@ static void rna_def_space_userpref(BlenderRNA *brna)
 	    {0,     "NAME",     0,      "Name",        "Filter based on the operator name"},
 	    {1,     "KEY",      0,      "Key-Binding", "Filter based on key bindings"},
 	    {0, NULL, 0, NULL, NULL}};
+	
+	//kkk https://docs.blender.org/api/blender_python_api_current/bpy.types.SpaceUserPreferences.html?highlight=spaceuserpreferences
+	static EnumPropertyItem user_pref_sections[] = {
+		{USER_SECTION_INTERFACE, "INTERFACE", 0, "Interface", ""},
+		{USER_SECTION_EDIT, "EDITING", 0, "Editing", ""},
+		{USER_SECTION_INPUT, "INPUT", 0, "Input", ""},
+		{USER_SECTION_ADDONS, "ADDONS", 0, "Add-ons", ""},
+		{USER_SECTION_THEME, "THEMES", 0, "Themes", ""},
+		{USER_SECTION_FILE, "FILES", 0, "File", ""},
+		{USER_SECTION_SYSTEM, "SYSTEM", 0, "System", ""},
+		{0, NULL, 0, NULL, NULL}
+	};
 
 	StructRNA *srna;
 	PropertyRNA *prop;
-
 	srna = RNA_def_struct(brna, "SpaceUserPreferences", "Space");
 	RNA_def_struct_sdna(srna, "SpaceUserPref");
 	RNA_def_struct_ui_text(srna, "Space User Preferences", "User preferences space data");
+
+	//
+	prop = RNA_def_property(srna, "active_section", PROP_ENUM, PROP_NONE);
+	RNA_def_property_enum_sdna(prop, NULL, "userpref");
+	RNA_def_property_enum_items(prop, user_pref_sections);
+	RNA_def_property_ui_text(prop, "Active Section", "Active section of the user preferences shown in the user interface");
+	//RNA_def_property_update(prop, 0, NULL);
+	//RNA_def_property_update(prop, 0, "rna_userdef_update");
+
+	//
+	prop = RNA_def_property(srna, "tempflag", PROP_INT, PROP_NONE);
+	RNA_def_property_int_sdna(prop, NULL, "tempflag");
+	RNA_def_property_ui_text(prop, "Temp Flag", "Temp Flag");
+	//RNA_def_property_update(prop, NC_SPACE | ND_SPACE_CLIP, NULL);
 
 	prop = RNA_def_property(srna, "filter_type", PROP_ENUM, PROP_NONE);
 	RNA_def_property_enum_sdna(prop, NULL, "filter_type");
@@ -4212,7 +4237,6 @@ static void rna_def_space_userpref(BlenderRNA *brna)
 	RNA_def_property_string_sdna(prop, NULL, "filter");
 	RNA_def_property_flag(prop, PROP_TEXTEDIT_UPDATE);
 	RNA_def_property_ui_text(prop, "Filter", "Search term for filtering in the UI");
-
 }
 
 static void rna_def_node_tree_path(BlenderRNA *brna)

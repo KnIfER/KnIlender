@@ -57,9 +57,12 @@
 #  include <unistd.h>  /* mkdtemp on OSX (and probably all *BSD?), not worth making specific check for this OS. */
 #endif /* WIN32 */
 
+#define CMN_LOG printf
+
 /* local */
 static char bprogname[FILE_MAX];    /* full path to program executable */
 static char bprogdir[FILE_MAX];     /* full path to directory in which executable is located */
+static char* bprog_loc_dir = NULL;     /* full path to directory in which executable is located */
 static char btempdir_base[FILE_MAX];          /* persistent temporary directory */
 static char btempdir_session[FILE_MAX] = "";  /* volatile temporary directory */
 
@@ -218,7 +221,7 @@ static bool get_path_local(
 	BLI_cleanup_path(NULL, osx_resourses);
 	return test_path(targetpath, targetpath_len, osx_resourses, blender_version_decimal(ver), relfolder);
 #else
-	return test_path(targetpath, targetpath_len, bprogdir, blender_version_decimal(ver), relfolder);
+	return test_path(targetpath, targetpath_len, bprog_loc_dir?bprog_loc_dir:bprogdir, blender_version_decimal(ver), relfolder);
 #endif
 }
 
@@ -610,6 +613,24 @@ void BKE_appdir_program_path_init(const char *argv0)
 {
 	where_am_i(bprogname, sizeof(bprogname), argv0);
 	BLI_split_dir_part(bprogname, bprogdir, sizeof(bprogdir));
+
+	char fullpath[FILE_MAX];
+
+	BLI_join_dirfile(fullpath, sizeof(bprogdir), bprogdir, "override.yaml");
+
+	if(BLI_is_file(fullpath)){
+		FILE *fp = fopen(fullpath, "r");
+		//static char buff[FILE_MAX];
+		char *buff = (char*)malloc(FILE_MAX);
+		fscanf(fp, "%s", buff);
+		fclose(fp);
+		if(BLI_is_dir(buff)){
+			bprog_loc_dir = buff;
+		} else {
+			free(buff);
+		}
+		CMN_LOG("appdir path local : %s \n", bprog_loc_dir);
+	}
 }
 
 /**

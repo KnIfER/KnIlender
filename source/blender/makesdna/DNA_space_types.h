@@ -1248,6 +1248,9 @@ typedef struct SpaceUserPref {
 	SpaceLink *next, *prev;
 	ListBase regionbase;        /* storage of regions for inactive spaces */
 	int spacetype;
+	int tempflag;
+	short userpref;
+	short padpad;
 	
 	char pad[3];
 	char filter_type;

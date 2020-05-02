@@ -238,6 +238,8 @@ void BPY_python_start(int argc, const char **argv)
 	PyThreadState *py_tstate = NULL;
 	const char *py_path_bundle = BKE_appdir_folder_id(BLENDER_SYSTEM_PYTHON, NULL);
 
+	fprintf(stdout, "Python Path: %s ", py_path_bundle);
+
 	/* not essential but nice to set our name */
 	static wchar_t program_path_wchar[FILE_MAX]; /* python holds a reference */
 	BLI_strncpy_wchar_from_utf8(program_path_wchar, BKE_appdir_program_path(), ARRAY_SIZE(program_path_wchar));

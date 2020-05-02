@@ -29,6 +29,7 @@
  */
 
 
+#include "DNA_ID.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -48,16 +49,19 @@
 #include "WM_types.h"
 
 
+#define CMN_LOG printf
 
 /* ******************** default callbacks for userpref space ***************** */
 
-static SpaceLink *userpref_new(const bContext *UNUSED(C))
+static SpaceLink *userpref_new(const bContext *C)
 {
+	CMN_LOG("userpref_new %s \n", C);
 	ARegion *ar;
 	SpaceUserPref *spref;
 
 	spref = MEM_callocN(sizeof(SpaceUserPref), "inituserpref");
 	spref->spacetype = SPACE_USERPREF;
+	spref->tempflag=3;
 
 	/* header */
 	ar = MEM_callocN(sizeof(ARegion), "header for userpref");
@@ -94,6 +98,8 @@ static SpaceLink *userpref_duplicate(SpaceLink *sl)
 	SpaceUserPref *sprefn = MEM_dupallocN(sl);
 
 	/* clear or remove stuff from old */
+
+	CMN_LOG("userpref_duplicate");
 
 	return (SpaceLink *)sprefn;
 }
@@ -152,6 +158,28 @@ static void userpref_header_listener(bScreen *UNUSED(sc), ScrArea *UNUSED(sa), A
 #endif
 }
 
+const char *space_context_dir[] = {"use_prefernce", NULL};
+
+
+static int space_context(const bContext *C, const char *member, bContextDataResult *result)
+{
+	SpaceUserPref *st = CTX_wm_space_userpref(C);
+
+	if (CTX_data_dir(member)) {
+		CTX_data_dir_set(result, space_context_dir);
+		return 1;
+	}
+	else if (true) {
+		//static ID id_;
+		//id_.name[0] = id;
+		//CTX_data_id_pointer_set(result, &id_);
+		return 1;
+	}
+
+	return 0;
+}
+
+
 /* only called once, from space/spacetypes.c */
 void ED_spacetype_userpref(void)
 {
@@ -167,6 +195,8 @@ void ED_spacetype_userpref(void)
 	st->duplicate = userpref_duplicate;
 	st->operatortypes = userpref_operatortypes;
 	st->keymap = userpref_keymap;
+	//st->context = space_context;
+	//st->id_remap = userpref_id_remap;
 
 	/* regions: main window */
 	art = MEM_callocN(sizeof(ARegionType), "spacetype userpref region");

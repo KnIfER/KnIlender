@@ -25,6 +25,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "DNA_curve_types.h"
 #include "DNA_space_types.h"
@@ -4218,6 +4219,7 @@ static void rna_def_userdef_system(BlenderRNA *brna)
 
 static void rna_def_userdef_input(BlenderRNA *brna)
 {
+	printf("rna_def_userdef_input!!!//kkk");
 	PropertyRNA *prop;
 	StructRNA *srna;
 
@@ -4648,6 +4650,7 @@ static void rna_def_userdef_autoexec_path_collection(BlenderRNA *brna, PropertyR
 
 void RNA_def_userdef(BlenderRNA *brna)
 {
+	printf("RNA_def_userdef!!!//kkk");
 	StructRNA *srna;
 	PropertyRNA *prop;
 
@@ -4666,6 +4669,7 @@ void RNA_def_userdef(BlenderRNA *brna)
 	rna_def_userdef_solidlight(brna);
 	rna_def_userdef_walk_navigation(brna);
 
+	//kkk https://docs.blender.org/api/blender_python_api_current/bpy.types.UserPreferences.html?highlight=userpreferences
 	srna = RNA_def_struct(brna, "UserPreferences", NULL);
 	RNA_def_struct_sdna(srna, "UserDef");
 	RNA_def_struct_clear_flag(srna, STRUCT_UNDO);

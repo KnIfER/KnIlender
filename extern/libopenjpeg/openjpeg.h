@@ -906,7 +906,6 @@ Destroy Codestream information after compression or decompression
 */
 OPJ_API void OPJ_CALLCONV opj_destroy_cstr_info(opj_codestream_info_t *cstr_info);
 
-
 #ifdef __cplusplus
 }
 #endif

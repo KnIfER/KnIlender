@@ -156,30 +156,30 @@ static int wm_collada_export_exec(bContext *C, wmOperator *op)
 	ED_object_editmode_load(CTX_data_edit_object(C));
 
 
-	export_count = collada_export(CTX_data_scene(C),
-		filepath,
-		apply_modifiers,
-		export_mesh_type,
-		selected,
-		include_children,
-		include_armatures,
-		include_shapekeys,
-		deform_bones_only,
-
-		active_uv_only,
-		export_texture_type,
-		use_texture_copies,
-
-		triangulate,
-		use_object_instantiation,
-		use_blender_profile,
-		sort_by_name,
-		export_transformation_type,
-
-		open_sim,
-		limit_precision,
-		keep_bind_info
-	);
+	//export_count = collada_export(CTX_data_scene(C),
+	//	filepath,
+	//	apply_modifiers,
+	//	export_mesh_type,
+	//	selected,
+	//	include_children,
+	//	include_armatures,
+	//	include_shapekeys,
+	//	deform_bones_only,
+	//
+	//	active_uv_only,
+	//	export_texture_type,
+	//	use_texture_copies,
+	//
+	//	triangulate,
+	//	use_object_instantiation,
+	//	use_blender_profile,
+	//	sort_by_name,
+	//	export_transformation_type,
+	//
+	//	open_sim,
+	//	limit_precision,
+	//	keep_bind_info
+	//);
 
 	if (export_count == 0) {
 		BKE_report(op->reports, RPT_WARNING, "No objects selected -- Created empty export file");
@@ -442,21 +442,21 @@ static int wm_collada_import_exec(bContext *C, wmOperator *op)
 	min_chain_length = RNA_int_get(op->ptr, "min_chain_length");
 
 	RNA_string_get(op->ptr, "filepath", filename);
-	if (collada_import(
-	        C, filename,
-	        import_units,
-	        find_chains,
-	        auto_connect,
-	        fix_orientation,
-	        min_chain_length,
-	        keep_bind_info) )
-	{
-		return OPERATOR_FINISHED;
-	}
-	else {
+	//if (collada_import(
+	//        C, filename,
+	//        import_units,
+	//        find_chains,
+	//        auto_connect,
+	//        fix_orientation,
+	//        min_chain_length,
+	//        keep_bind_info) )
+	//{
+	//	return OPERATOR_FINISHED;
+	//}
+	//else {
 		BKE_report(op->reports, RPT_ERROR, "Errors found during parsing COLLADA document (see console for details)");
 		return OPERATOR_CANCELLED;
-	}
+	//}
 }
 
 static void uiCollada_importSettings(uiLayout *layout, PointerRNA *imfptr)

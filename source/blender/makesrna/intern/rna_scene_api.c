@@ -290,31 +290,31 @@ static void rna_Scene_collada_export(
         int limit_precision,
         int keep_bind_info)
 {
-	collada_export(scene,
-		filepath,
-
-		apply_modifiers,
-		export_mesh_type,
-
-		selected,
-		include_children,
-		include_armatures,
-		include_shapekeys,
-		deform_bones_only,
-
-		active_uv_only,
-		export_texture_type,
-		use_texture_copies,
-
-		triangulate,
-		use_object_instantiation,
-		use_blender_profile,
-		sort_by_name,
-
-		export_transformation_type,
-		open_sim,
-		limit_precision,
-		keep_bind_info);
+	//collada_export(scene,
+	//	filepath,
+	//
+	//	apply_modifiers,
+	//	export_mesh_type,
+	//
+	//	selected,
+	//	include_children,
+	//	include_armatures,
+	//	include_shapekeys,
+	//	deform_bones_only,
+	//
+	//	active_uv_only,
+	//	export_texture_type,
+	//	use_texture_copies,
+	//
+	//	triangulate,
+	//	use_object_instantiation,
+	//	use_blender_profile,
+	//	sort_by_name,
+	//
+	//	export_transformation_type,
+	//	open_sim,
+	//	limit_precision,
+	//	keep_bind_info);
 }
 
 #endif

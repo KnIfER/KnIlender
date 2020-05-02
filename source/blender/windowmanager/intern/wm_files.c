@@ -716,7 +716,7 @@ int wm_homefile_read(
 			if (userdef != NULL) {
 				BKE_blender_userdef_data_set_and_free(userdef);
 				userdef = NULL;
-
+	
 				skip_flags |= BLO_READ_SKIP_USERDEF;
 				printf("Read prefs: %s\n", filepath_userdef);
 			}

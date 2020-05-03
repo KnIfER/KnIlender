@@ -249,6 +249,8 @@ Panel *UI_panel_begin(ScrArea *sa, ARegion *ar, uiBlock *block, PanelType *pt, P
 	Panel *palast, *panext;
 	const char *drawname = CTX_IFACE_(pt->translation_context, pt->label);
 	const char *idname = pt->idname;
+	//绘制轮询，CPU占用较大
+	//printf("new panel %s\n", idname);
 #ifdef UI_USE_PANELTAB
 	const char *tabname = pt->idname;
 	const char *hookname = NULL;
@@ -1990,7 +1992,7 @@ int ui_handler_panel_region(bContext *C, const wmEvent *event, ARegion *ar, cons
 					}
 
 				}
-				else if (event->type == RIGHTMOUSE) {
+				else if (event->type == RIGHTMOUSE) { // 嘛用没有
 					if (mouse_state == PANEL_MOUSE_INSIDE_HEADER) {
 						ui_panel_menu(C, ar, block->panel);
 						retval = WM_UI_HANDLER_BREAK;

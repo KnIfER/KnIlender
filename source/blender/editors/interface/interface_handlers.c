@@ -3638,6 +3638,7 @@ static void ui_numedit_apply(bContext *C, uiBlock *block, uiBut *but, uiHandleBu
 
 /* ****************** menu opening for various types **************** */
 
+//弹出的是工具栏菜单，与右击菜单无关。
 static void ui_block_open_begin(bContext *C, uiBut *but, uiHandleButtonData *data)
 {
 	uiBlockCreateFunc func = NULL;
@@ -7119,6 +7120,7 @@ static int ui_do_button(bContext *C, uiBlock *block, uiBut *but, const wmEvent *
 		         !IS_EVENT_MOD(event, shift, ctrl, alt, oskey) &&
 		         (event->val == KM_PRESS))
 		{
+			//这是在弹出菜单上面右击
 			/* RMB has two options now */
 			if (ui_but_menu(C, but)) {
 				return WM_UI_HANDLER_BREAK;
@@ -8875,6 +8877,7 @@ static char ui_menu_scroll_test(uiBlock *block, int my)
 	return 0;
 }
 
+//处理menu界面自身的滚动。
 static int ui_menu_scroll(ARegion *ar, uiBlock *block, int my, uiBut *to_bt)
 {
 	uiBut *bt;
@@ -9037,6 +9040,7 @@ static int ui_handle_menu_event(
         bContext *C, const wmEvent *event, uiPopupBlockHandle *menu,
         int level, const bool is_parent_inside, const bool is_parent_menu, const bool is_floating)
 {
+	//kkk
 	ARegion *ar;
 	uiBlock *block;
 	uiBut *but;
@@ -9154,6 +9158,8 @@ static int ui_handle_menu_event(
 				case WHEELUPMOUSE:
 				case WHEELDOWNMOUSE:
 				case MOUSEPAN:
+					//kkk 滑轮/上下键滚动
+					//printf("MOUSEPAN\n");
 					/* arrowkeys: only handle for block_loop blocks */
 					if (IS_EVENT_MOD(event, shift, ctrl, alt, oskey)) {
 						/* pass */
@@ -9338,7 +9344,7 @@ static int ui_handle_menu_event(
 				}
 			}
 		}
-		
+		//与滚动无关
 		/* here we check return conditions for menus */
 		if (block->flag & UI_BLOCK_LOOP) {
 			/* if we click outside the block, verify if we clicked on the
@@ -9352,7 +9358,7 @@ static int ui_handle_menu_event(
 
 				if (ELEM(event->type, LEFTMOUSE, MIDDLEMOUSE, RIGHTMOUSE) &&
 				    ELEM(event->val, KM_PRESS, KM_DBL_CLICK))
-				{
+				{ // 嘛用没有
 					if ((is_parent_menu == false) && (U.uiflag & USER_MENUOPENAUTO) == 0) {
 						/* for root menus, allow clicking to close */
 						if (block->flag & (UI_BLOCK_OUT_1))

@@ -11,7 +11,7 @@ Python side : https://github.com/KnIfER/blender-addons
 
 ### Compile (Windows) : 
 Just follow blender's official guide. You can use svn or wget(recommended) to download those [precompiled v2.79 dependencies](https://svn.blender.org/svnroot/bf-blender/tags/blender-2.79a-release/lib/win64_vc14/) (3.40GB).  
-Or You can download compressed archives seprately : 
+Or You can download compressed archives separately : 
 ###### ——  Baidu SlowPan : [Common includes(pnek)](https://pan.baidu.com/s/1Pg_Bn0EbzB_2D7DLwdZ-Og)、[Release lib(jgib)](https://pan.baidu.com/s/1whwUdrLd_t-TW3rH_r0LoQ)、[Debug lib(idac)](https://pan.baidu.com/s/1y1gJJLfPzurR5i31LZe5Hw).
 ###### ——  Google drive: [Common includes(89MB)](https://drive.google.com/open?id=1MVy-N9iybt1xj45RtlZ24cbUU7JIM_v8)、[Release lib(57MB)](https://drive.google.com/open?id=1k7YCAEKybraIQtmODdZz5H1C6zDJf-7w)、[Debug lib(204MB)](https://drive.google.com/open?id=1p1XbkcU1z69emXkw0O5CygDPmZrFDeHN).
 

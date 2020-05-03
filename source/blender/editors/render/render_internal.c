@@ -1093,7 +1093,6 @@ static int render_view3d_disprect(Scene *scene, ARegion *ar, View3D *v3d, Region
 static bool render_view3d_get_rects(ARegion *ar, View3D *v3d, RegionView3D *rv3d, rctf *viewplane, RenderEngine *engine,
                                     float *r_clipsta, float *r_clipend, float *r_pixsize, bool *r_ortho)
 {
-	
 	if (ar->winx < 4 || ar->winy < 4) return false;
 	
 	*r_ortho = ED_view3d_viewplane_get(v3d, rv3d, ar->winx, ar->winy, viewplane, r_clipsta, r_clipend, r_pixsize);

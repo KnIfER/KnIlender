@@ -1,4 +1,8 @@
 /build
+# git push origin --delete tag v2.82a
+# git tag -D v2.82a
+# git repack -ad  
+#git gc --aggressive --prune
 
 # generic files to ignore
 .*

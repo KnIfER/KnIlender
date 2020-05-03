@@ -262,7 +262,7 @@ void BKE_camera_params_from_view3d(CameraParams *params, const View3D *v3d, cons
 		params->zoom = CAMERA_PARAM_ZOOM_INIT_PERSP;
 	}
 	else {
-		/* perspective view */
+		//printf("/* perspective view %f */", params->zoom);
 		params->zoom = CAMERA_PARAM_ZOOM_INIT_PERSP;
 	}
 }

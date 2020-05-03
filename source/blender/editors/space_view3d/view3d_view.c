@@ -174,6 +174,7 @@ void ED_view3d_smooth_view_ex(
         View3D *v3d, ARegion *ar, const int smooth_viewtx,
         const V3D_SmoothParams *sview)
 {
+	printf("ED_view3d_smooth_view_ex");
 	RegionView3D *rv3d = ar->regiondata;
 	struct SmoothView3DStore sms = {{0}};
 	bool ok = false;
@@ -339,6 +340,7 @@ void ED_view3d_smooth_view(
 /* only meant for timer usage */
 static void view3d_smoothview_apply(bContext *C, View3D *v3d, ARegion *ar, bool sync_boxview)
 {
+	printf("view3d_smoothview_apply");
 	RegionView3D *rv3d = ar->regiondata;
 	struct SmoothView3DStore *sms = rv3d->sms;
 	float step, step_inv;
@@ -594,6 +596,8 @@ void VIEW3D_OT_camera_to_view_selected(wmOperatorType *ot)
 
 static void sync_viewport_camera_smoothview(bContext *C, View3D *v3d, Object *ob, const int smooth_viewtx)
 {
+
+	printf("sync_viewport_camera_smoothview");
 	Main *bmain = CTX_data_main(C);
 	for (bScreen *screen = bmain->screen.first; screen != NULL; screen = screen->id.next) {
 		for (ScrArea *area = screen->areabase.first; area != NULL; area = area->next) {
@@ -643,6 +647,7 @@ static void sync_viewport_camera_smoothview(bContext *C, View3D *v3d, Object *ob
 
 static int view3d_setobjectascamera_exec(bContext *C, wmOperator *op)
 {	
+	printf("view3d_setobjectascamera_exec");
 	View3D *v3d;
 	ARegion *ar;
 	RegionView3D *rv3d;
@@ -885,6 +890,7 @@ bool ED_view3d_viewplane_get(
  */
 void ED_view3d_polygon_offset(const RegionView3D *rv3d, const float dist)
 {
+	//printf("ED_view3d_polygon_offset");
 	float viewdist;
 
 	if (rv3d->rflag & RV3D_ZOFFSET_DISABLED) {
@@ -910,6 +916,7 @@ void ED_view3d_polygon_offset(const RegionView3D *rv3d, const float dist)
  */
 void view3d_winmatrix_set(ARegion *ar, const View3D *v3d, const rcti *rect)
 {
+	//printf("/* view3d_winmatrix_set  */");
 	RegionView3D *rv3d = ar->regiondata;
 	rctf viewplane;
 	float clipsta, clipend;
@@ -937,6 +944,7 @@ void view3d_winmatrix_set(ARegion *ar, const View3D *v3d, const rcti *rect)
 		wmOrtho(viewplane.xmin, viewplane.xmax, viewplane.ymin, viewplane.ymax, clipsta, clipend);
 	}
 	else {
+		//printf("/* wmFrustum  %f,  %f,  %f,  %f,  %f, %f \n*/", viewplane.xmin, viewplane.xmax, viewplane.ymin, viewplane.ymax, clipsta, clipend);
 		wmFrustum(viewplane.xmin, viewplane.xmax, viewplane.ymin, viewplane.ymax, clipsta, clipend);
 	}
 
@@ -1056,7 +1064,9 @@ void view3d_viewmatrix_set(Scene *scene, const View3D *v3d, RegionView3D *rv3d, 
 			ED_view3d_lock(rv3d);
 		
 		quat_to_mat4(rv3d->viewmat, rv3d->viewquat);
-		if (rv3d->persp == RV3D_PERSP) rv3d->viewmat[3][2] -= rv3d->dist;
+		//kkk
+		if (rv3d->persp == RV3D_PERSP) rv3d->viewmat[3][2] = -rv3d->dist;
+		//printf("LAVIEWEST %f \n", rv3d->dist);
 		if (v3d->ob_centre) {
 			Object *ob = v3d->ob_centre;
 			float vec[3];
@@ -1311,6 +1321,7 @@ static bool view3d_localview_init(
         Main *bmain, Scene *scene, ScrArea *sa, const int smooth_viewtx,
         ReportList *reports)
 {
+	printf("view3d_localview_init");
 	View3D *v3d = sa->spacedata.first;
 	Base *base;
 	float min[3], max[3], box[3], mid[3];
@@ -1428,6 +1439,7 @@ static bool view3d_localview_init(
 
 static void restore_localviewdata(wmWindowManager *wm, wmWindow *win, Main *bmain, Scene *scene, ScrArea *sa, const int smooth_viewtx)
 {
+	printf("restore_localviewdata");
 	const bool free = true;
 	ARegion *ar;
 	View3D *v3d = sa->spacedata.first;
@@ -1852,6 +1864,7 @@ float ED_view3d_radius_to_dist(
         const char persp, const bool use_aspect,
         const float radius)
 {
+	//printf("ED_view3d_radius_to_dist");
 	float dist;
 
 	BLI_assert(ELEM(persp, RV3D_ORTHO, RV3D_PERSP, RV3D_CAMOB));

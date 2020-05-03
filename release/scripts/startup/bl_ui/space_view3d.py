@@ -203,7 +203,8 @@ class VIEW3D_MT_editor_menus(Menu):
                 layout.menu("VIEW3D_MT_hide_mask")
         else:
             layout.menu("VIEW3D_MT_object")
-
+        if obj!=None and obj.mode == 'POSE' :
+            layout.menu("VIEW3D_MT_pose")
 
 # ********** Menu **********
 

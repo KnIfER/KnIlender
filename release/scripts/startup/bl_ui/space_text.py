@@ -17,6 +17,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 # <pep8-80 compliant>
+import os
 import bpy
 from bpy.types import Header, Menu, Panel
 from bpy.app.translations import pgettext_iface as iface_
@@ -47,7 +48,7 @@ class TEXT_HT_header(Header):
         row = layout.row(align=True)
         row.prop(st, "show_line_numbers", text="")
         row.prop(st, "show_word_wrap", text="")
-        row.prop(st, "show_syntax_highlight", text="")
+        #row.prop(st, "save_text", text="")
 
         if text:
             osl = text.name.endswith(".osl") or text.name.endswith(".oso")
@@ -62,15 +63,18 @@ class TEXT_HT_header(Header):
                 row = layout.row()
                 row.active = text.name.endswith(".py")
                 row.prop(text, "use_module")
-
+            
             row = layout.row()
+
             if text.filepath:
+                op = row.operator("file.simple_locator")
+                op.var1 = text.filepath
+                template = "%s/%s";
                 if text.is_dirty:
-                    row.label(text=iface_("File: *%r (unsaved)") %
-                              text.filepath, translate=False)
-                else:
-                    row.label(text=iface_("File: %r") %
-                              text.filepath, translate=False)
+                    row.operator("text.save")
+                    template = "*"+template
+                row.label(text=iface_(template) %
+                          (bpy.path.basename(os.path.dirname(text.filepath)), bpy.path.basename(text.filepath)), translate=False)
             else:
                 row.label(text="Text: External"
                           if text.library

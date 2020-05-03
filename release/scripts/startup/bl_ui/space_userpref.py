@@ -50,38 +50,50 @@ class USERPREF_HT_header(Header):
 
         layout.template_header()
 
-        userpref = context.user_preferences
-
         layout.operator_context = 'EXEC_AREA'
         layout.operator("wm.save_userpref")
 
         layout.operator_context = 'INVOKE_DEFAULT'
-
-        if userpref.active_section == 'INPUT':
+        active_section = getContextualSection(context)
+        if active_section == 'INPUT':
             layout.operator("wm.keyconfig_import")
             layout.operator("wm.keyconfig_export")
-        elif userpref.active_section == 'ADDONS':
+        elif active_section == 'ADDONS':
             layout.operator("wm.addon_install", icon='FILESEL')
             layout.operator("wm.addon_refresh", icon='FILE_REFRESH')
             layout.menu("USERPREF_MT_addons_online_resources")
-        elif userpref.active_section == 'THEMES':
+        elif active_section == 'THEMES':
             layout.operator("ui.reset_default_theme")
             layout.operator("wm.theme_install")
 
+ForceGlobalTab = False
 
 class USERPREF_PT_tabs(Panel):
     bl_label = ""
     bl_space_type = 'USER_PREFERENCES'
     bl_region_type = 'WINDOW'
     bl_options = {'HIDE_HEADER'}
-
+        
     def draw(self, context):
-        layout = self.layout
-
+        st = context.space_data
         userpref = context.user_preferences
-
-        layout.row().prop(userpref, "active_section", expand=True)
-
+        if ForceGlobalTab or not hasattr(st, 'active_section'):
+            st = userpref
+        else:
+            if st.tempflag&0x1:
+                st.active_section = userpref.active_section
+                st.tempflag&=~0x1
+            if st.tempflag&0x2:
+                userpref.active_section = st.active_section
+            userpref.active_section = userpref.active_section
+        #https://blender.stackexchange.com/questions/176677/
+        self.layout.row().prop(st, "active_section", expand=True)
+        
+def getContextualSection(context):
+    st = context.space_data
+    if ForceGlobalTab or not hasattr(st, 'active_section'):
+        st = context.user_preferences
+    return st.active_section
 
 class USERPREF_MT_interaction_presets(Menu):
     bl_label = "Presets"
@@ -204,7 +216,7 @@ class USERPREF_PT_interface(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'INTERFACE')
+        return (getContextualSection(context) == 'INTERFACE')
 
     def draw(self, context):
         import sys
@@ -327,8 +339,7 @@ class USERPREF_PT_edit(Panel):
 
     @classmethod
     def poll(cls, context):
-        userpref = context.user_preferences
-        return (userpref.active_section == 'EDITING')
+        return getContextualSection(context) == 'EDITING'
 
     def draw(self, context):
         layout = self.layout
@@ -453,7 +464,7 @@ class USERPREF_PT_system(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'SYSTEM')
+        return (getContextualSection(context) == 'SYSTEM')
 
     def draw(self, context):
         import sys
@@ -759,7 +770,7 @@ class USERPREF_PT_theme(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'THEMES')
+        return (getContextualSection(context) == 'THEMES')
 
     def draw(self, context):
         layout = self.layout
@@ -983,7 +994,7 @@ class USERPREF_PT_file(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'FILES')
+        return (getContextualSection(context) == 'FILES')
 
     def draw(self, context):
         layout = self.layout
@@ -1157,7 +1168,7 @@ class USERPREF_PT_input(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'INPUT')
+        return (getContextualSection(context) == 'INPUT')
 
     @staticmethod
     def draw_input_prefs(inputs, layout):
@@ -1329,7 +1340,7 @@ class USERPREF_PT_addons(Panel):
     @classmethod
     def poll(cls, context):
         userpref = context.user_preferences
-        return (userpref.active_section == 'ADDONS')
+        return (getContextualSection(context) == 'ADDONS')
 
     @staticmethod
     def is_user_addon(mod, user_addon_paths):

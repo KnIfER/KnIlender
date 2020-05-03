@@ -415,8 +415,11 @@ const char *BKE_appdir_folder_id_ex(
 		case BLENDER_USER_SCRIPTS:
 			if (get_path_user(path, path_len, "scripts", subfolder, "BLENDER_USER_SCRIPTS", ver)) break;
 			return NULL;
-			
+		//kkk
 		case BLENDER_SYSTEM_SCRIPTS:
+#ifdef FastDebug
+			if(1) return "D:\\Code\\FigureOut\\blender\\blender-blender-v2.79b-release\\release\\scripts";
+#endif
 			if (get_path_local(path, path_len, "scripts", subfolder, ver)) break;
 			if (get_path_system(path, path_len, "scripts", subfolder, "BLENDER_SYSTEM_SCRIPTS", ver)) break;
 			return NULL;
@@ -614,23 +617,26 @@ void BKE_appdir_program_path_init(const char *argv0)
 	where_am_i(bprogname, sizeof(bprogname), argv0);
 	BLI_split_dir_part(bprogname, bprogdir, sizeof(bprogdir));
 
-	char fullpath[FILE_MAX];
-
-	BLI_join_dirfile(fullpath, sizeof(bprogdir), bprogdir, "override.yaml");
-
-	if(BLI_is_file(fullpath)){
-		FILE *fp = fopen(fullpath, "r");
-		//static char buff[FILE_MAX];
-		char *buff = (char*)malloc(FILE_MAX);
-		fscanf(fp, "%s", buff);
-		fclose(fp);
-		if(BLI_is_dir(buff)){
-			bprog_loc_dir = buff;
-		} else {
-			free(buff);
-		}
-		CMN_LOG("appdir path local : %s \n", bprog_loc_dir);
-	}
+#ifdef FastDebug
+	bprog_loc_dir = "D:\\Downloads\\blender-2.79a-windows64";
+#endif
+//	char fullpath[FILE_MAX];
+//
+//	BLI_join_dirfile(fullpath, sizeof(bprogdir), bprogdir, "override.yaml");
+//
+//	if(BLI_is_file(fullpath)){
+//		FILE *fp = fopen(fullpath, "r");
+//		//static char buff[FILE_MAX];
+//		char *buff = (char*)malloc(FILE_MAX);
+//		fscanf(fp, "%s", buff);
+//		fclose(fp);
+//		if(BLI_is_dir(buff)){
+//			bprog_loc_dir = buff;
+//		} else {
+//			free(buff);
+//		}
+//		CMN_LOG("appdir path local : %s \n", bprog_loc_dir);
+//	}
 }
 
 /**

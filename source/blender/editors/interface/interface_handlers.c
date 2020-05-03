@@ -9190,7 +9190,7 @@ static int ui_handle_menu_event(
 								but = is_next ? ui_but_next(but) : ui_but_prev(but);
 							}
 
-							if (!but) {
+							if (!but && false) {
 								/* wrap button */
 								uiBut *but_wrap;
 								but_wrap = is_next ? ui_but_first(block) : ui_but_last(block);

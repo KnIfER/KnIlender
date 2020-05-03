@@ -4,6 +4,10 @@
 # git repack -ad  
 #git gc --aggressive --prune
 
+**/__pycache__/
+*.pyc
+
+
 # generic files to ignore
 .*
 

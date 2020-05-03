@@ -8738,6 +8738,8 @@ static void ui_handle_button_return_submenu(bContext *C, const wmEvent *event, u
 
 static void ui_mouse_motion_towards_init_ex(uiPopupBlockHandle *menu, const int xy[2], const bool force)
 {
+	//与菜单弹出位置无关
+	//if(true) return;
 	BLI_assert(((uiBlock *)menu->region->uiblocks.first)->flag & UI_BLOCK_MOVEMOUSE_QUIT);
 
 	if (!menu->dotowards || force) {
@@ -9040,7 +9042,6 @@ static int ui_handle_menu_event(
         bContext *C, const wmEvent *event, uiPopupBlockHandle *menu,
         int level, const bool is_parent_inside, const bool is_parent_menu, const bool is_floating)
 {
-	//kkk
 	ARegion *ar;
 	uiBlock *block;
 	uiBut *but;

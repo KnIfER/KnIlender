@@ -31,5 +31,5 @@ Why v2.79?
 
 I. Font is very small and cannot scale in previous versions. ~~(Same in foregone 'Unity's : What a pair of fellow sufferers!)~~  
 
-II. v2.8 changed storage format and Unity can no longer recogonize animations.
+II. v2.8 changed storage format and Unity can no longer recogonize it's animations.
 

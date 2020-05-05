@@ -9,6 +9,10 @@ Python side : https://github.com/KnIfER/blender-addons
 ###### Unity metadata utility
 ###### ——  Unity 2019 can still parse the animation clips correctly, but it failed to record them in the .meta file. This is a help.
 
+[workspace/sbone2.py](https://github.com/KnIfER/KnIlender/blob/blender-v2.79b-release/release/scripts/workspace/sbone2.py)
+###### Info Based Animation Adjuster
+###### ——  Due to the complexity of matrix, The result of UE4-like animation editor might be undesired. Blender's info logs can be used to repeat transformations on every frame.
+
 ### Compile (Windows) : 
 Just follow blender's official guide. You can use svn or wget(recommended) to download those [precompiled v2.79 dependencies](https://svn.blender.org/svnroot/bf-blender/tags/blender-2.79a-release/lib/win64_vc14/) (3.40GB).  
 Or You can download compressed archives separately : 

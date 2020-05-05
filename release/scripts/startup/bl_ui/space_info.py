@@ -35,6 +35,8 @@ class INFO_HT_header(Header):
         row.template_header()
 
         INFO_MT_editor_menus.draw_collapsible(context, layout)
+        
+        layout.operator("info.clear", text="", icon='BLENDER', emboss=False) # wm.splash
 
         if window.screen.show_fullscreen:
             layout.operator("screen.back_to_previous", icon='SCREEN_BACK', text="Back to Previous")
@@ -68,7 +70,6 @@ class INFO_HT_header(Header):
             row.label(bpy.app.autoexec_fail_message)
             return
 
-        row.operator("wm.splash", text="", icon='BLENDER', emboss=False)
         row.label(text=scene.statistics(), translate=False)
 
 

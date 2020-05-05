@@ -62,9 +62,10 @@ for a in bpy.data.actions:
 def appendAllLeft():
     val=''
     for TRI in TakeRecords: 
-        a = TakeRecords[TRI]
-        val+=template%(a.name,a.name,a.ff,a.lf)
-        print("append new:", a.name)
+        nowRecord = TakeRecords[TRI]
+        if nowRecord.ff<=nowRecord.lf and nowRecord.ff>=0:
+            val+=template%(nowRecord.name,nowRecord.name,nowRecord.ff,nowRecord.lf)
+            print("append new:", nowRecord.name)
     return val
 
 PatternNM='name: (.*)'
@@ -79,7 +80,9 @@ def processTake(take):
         print("[Name] ", mTake.group())
         mTakeName=mTake.group(1)
         nowRecord = TakeRecords.get(mTakeName)
-        if nowRecord and nowRecord.ff<nowRecord.lf and nowRecord.ff>=0:
+        if nowRecord:
+            TakeRecords.pop(mTakeName)
+        if nowRecord and nowRecord.ff<=nowRecord.lf and nowRecord.ff>=0:
             #print("\nm Clip recorded found match :", nowRecord)
             #Locate first frame. Replace or append afterwards if records not match.
             mTake = re.search(PatternFF, take)
@@ -105,12 +108,10 @@ def processTake(take):
             else:
                 take = take+('\nlastFrame: '+str(nowRecord.lf));
                 changed = True
-            TakeRecords.pop(mTakeName)
             ret = take
             if changed:
-                print("{key frame}:", mTakeName, take)
-                print("{before}:", val1, val2)
-                print("{after}:", nowRecord.ff, nowRecord.lf)
+                print("{key frame changed before}:", val1, val2)
+                print("{key frame changed after}::", nowRecord.ff, nowRecord.lf)
         else:
             print("{---removing---} ", mTakeName)
             ret = ''
@@ -120,22 +121,24 @@ def processTake(take):
     #error:name field not found   
     return ret, changed
     
-RidgeLineEnding = "\n    "
+LineEnd = "\n"
 
 def getNextBlockStart(idxST):
     ret = metaData.find(templateStart, idxST)
     if ret>0:
         return ret, False
-    len1 = len(RidgeLineEnding)
     len2 = len(metaData)
     while True:
-        ret = metaData.find(RidgeLineEnding, idxST)
-        if ret<0 or ret+4>=len2:
+        ret = metaData.find(LineEnd, idxST)
+        if ret<0:
             break
-        if metaData[ret+len1]!=" ":
-            return ret+1, True
-        else:
-            idxST = ret + len1
+        for i in range(1, 6):
+            if ret+i>=len2:
+                break;
+            if metaData[ret+i]!=" ":
+                return ret, True
+            else:
+                idxST = ret + 1
     return len2, True
 
 metaData=""

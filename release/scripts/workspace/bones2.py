@@ -104,7 +104,7 @@ for boneName in deltaDictRef:
     #    #, parent_matrix=matrixDict[pBone.name],
     #    #parent_matrix_local=pBone.matrix_local)
     
-    boneOS = poseBones[boneName].matrix
+    boneOS = poseBones[boneName].matrix # current pose
     parentOS = poseBones[pBone.name].matrix
     boneRP = thisBone.matrix_local  # rest pose matrix in bone local space
     parentBoneRP = pBone.matrix_local  # parent bone's rest pose matrix in bone local space
@@ -115,19 +115,20 @@ for boneName in deltaDictRef:
     #print("Materrix!!!", parentBoneRP @ boneRP)
     #print("Materrix!!!", ( parentBoneRP @ boneRP ).inverted())
     
-    mm =  ( parentBoneRP.inverted() @ boneRP ).inverted() @ parentOS.inverted() @ boneOS
+    mm =  ( parentBoneRP.inverted() * boneRP ).inverted() * parentOS.inverted() * boneOS
+    
     
     loc0, rot0, sca0 = mm.decompose()
     #print(boneName)
     transFormDiff = deltaDictRef[boneName]
 
-    qBuild = Quaternion(transFormDiff.rotationBuild)
+    qBuild = Quaternion(transFormDiff.rotationBuild) # stored in fcurve
     
     
     
     qDiff = rot0.rotation_difference(qBuild)
-    #print("what's up?", pBone)
     print("what's up?")
-    #print("what's up0", boneName, getRotation(thisBone.matrix_local))# rest location
+    print("what's up?", pBone)
+    print("what's up0", boneName, getRotation(thisBone.matrix_local))# rest location
     print("what's up?", boneName, rot0)
     print("what's up?", boneName, qBuild)

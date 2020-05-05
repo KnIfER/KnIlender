@@ -1,8 +1,14 @@
 /build
 # git push origin --delete tag v2.82a
+# git push origin --delete branch_x
 # git tag -D v2.82a
-# git repack -ad  
-#git gc --aggressive --prune
+# git branch -a
+
+# git reflog expire --expire=now --all
+# git repack -ad  # Remove dangling objects from packfiles
+# git prune       # Remove dangling loose objects
+# https://stackoverflow.com/questions/5277467
+# git gc --aggressive --prune
 
 **/__pycache__/
 *.pyc

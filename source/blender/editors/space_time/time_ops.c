@@ -45,6 +45,8 @@
 #include "WM_api.h"
 #include "WM_types.h"
 
+#include "KNI.h"
+
 #include "time_intern.h"
 
 /* ****************** Start/End Frame Operators *******************************/
@@ -202,6 +204,33 @@ static void TIME_OT_view_frame(wmOperatorType *ot)
 	ot->flag = OPTYPE_REGISTER | OPTYPE_UNDO;
 }
 
+/******************* expand region area operator *********************/
+
+static int time_expand_region_width_poll(bContext *C)
+{
+	return 1;
+}
+
+static int time_expand_region_width_exec(bContext *C, wmOperator *op)
+{
+	expand_region_to_right_exec(C);
+}
+
+void TIME_OT_expand_region_width(wmOperatorType *ot)
+{
+	/* identifiers */
+	ot->name = "Expand Region Width";
+	ot->idname = "TIME_OT_expand_region_width";
+	ot->description = "Expand Region Width horizontally";
+
+	/* api callbacks */
+	ot->poll = time_expand_region_width_poll;
+	ot->exec = time_expand_region_width_exec;
+
+	/* flags */
+	ot->flag = OPTYPE_REGISTER | OPTYPE_UNDO;
+}
+
 /* ************************** registration **********************************/
 
 void time_operatortypes(void)
@@ -210,6 +239,7 @@ void time_operatortypes(void)
 	WM_operatortype_append(TIME_OT_end_frame_set);
 	WM_operatortype_append(TIME_OT_view_all);
 	WM_operatortype_append(TIME_OT_view_frame);
+	WM_operatortype_append(TIME_OT_expand_region_width);
 }
 
 void time_keymap(wmKeyConfig *keyconf)
@@ -223,5 +253,7 @@ void time_keymap(wmKeyConfig *keyconf)
 	WM_keymap_add_item(keymap, "TIME_OT_view_all", NDOF_BUTTON_FIT, KM_PRESS, 0, 0);
 #endif
 	WM_keymap_add_item(keymap, "TIME_OT_view_frame", PAD0, KM_PRESS, 0, 0);
+
+	WM_keymap_add_item(keymap, "TIME_OT_expand_region_width", TABKEY, KM_PRESS, KM_CTRL, 0);
 }
 

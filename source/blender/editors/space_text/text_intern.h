@@ -93,6 +93,7 @@ void TEXT_OT_save(struct wmOperatorType *ot);
 void TEXT_OT_save_as(struct wmOperatorType *ot);
 void TEXT_OT_make_internal(struct wmOperatorType *ot);
 void TEXT_OT_run_script(struct wmOperatorType *ot);
+void TEXT_OT_expand_region_width(struct wmOperatorType *ot);
 void TEXT_OT_refresh_pyconstraints(struct wmOperatorType *ot);
 
 void TEXT_OT_paste(struct wmOperatorType *ot);

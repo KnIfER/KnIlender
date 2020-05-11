@@ -35,3 +35,4 @@
 
 #endif /* __USERPREF_INTERN_H__ */
 
+void USERPREF_OT_view_info(struct wmOperatorType *ot);

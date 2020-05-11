@@ -48,6 +48,8 @@
 #include "WM_api.h"
 #include "WM_types.h"
 
+#include "userpref_intern.h"
+
 
 #define CMN_LOG printf
 
@@ -109,12 +111,19 @@ static SpaceLink *userpref_duplicate(SpaceLink *sl)
 /* add handlers, stuff you only do once or on area/region changes */
 static void userpref_main_region_init(wmWindowManager *wm, ARegion *ar)
 {
+	wmKeyMap *keymap;
+
 	/* do not use here, the properties changed in userprefs do a system-wide refresh, then scroller jumps back */
 	/*	ar->v2d.flag &= ~V2D_IS_INITIALISED; */
 	
 	ar->v2d.scroll = V2D_SCROLL_RIGHT | V2D_SCROLL_VERTICAL_HIDE;
 
 	ED_region_panels_init(wm, ar);
+
+	/* own keymap */
+	keymap = WM_keymap_find(wm->defaultconf, "User Preference", SPACE_USERPREF, 0);
+	WM_event_add_keymap_handler_bb(&ar->handlers, keymap, &ar->v2d.mask, &ar->winrct);
+
 }
 
 static void userpref_main_region_draw(const bContext *C, ARegion *ar)
@@ -124,11 +133,14 @@ static void userpref_main_region_draw(const bContext *C, ARegion *ar)
 
 static void userpref_operatortypes(void)
 {
+	WM_operatortype_append(USERPREF_OT_view_info);
 }
 
-static void userpref_keymap(struct wmKeyConfig *UNUSED(keyconf))
+static void userpref_keymap(struct wmKeyConfig *keyconf)
 {
-	
+	wmKeyMap *keymap = WM_keymap_find(keyconf, "User Preference", SPACE_USERPREF, 0);
+
+	WM_keymap_add_item(keymap, "USERPREF_OT_view_info", TABKEY, KM_PRESS, KM_CTRL, 0);
 }
 
 /* add handlers, stuff you only do once or on area/region changes */
@@ -158,28 +170,6 @@ static void userpref_header_listener(bScreen *UNUSED(sc), ScrArea *UNUSED(sa), A
 #endif
 }
 
-const char *space_context_dir[] = {"use_prefernce", NULL};
-
-
-static int space_context(const bContext *C, const char *member, bContextDataResult *result)
-{
-	SpaceUserPref *st = CTX_wm_space_userpref(C);
-
-	if (CTX_data_dir(member)) {
-		CTX_data_dir_set(result, space_context_dir);
-		return 1;
-	}
-	else if (true) {
-		//static ID id_;
-		//id_.name[0] = id;
-		//CTX_data_id_pointer_set(result, &id_);
-		return 1;
-	}
-
-	return 0;
-}
-
-
 /* only called once, from space/spacetypes.c */
 void ED_spacetype_userpref(void)
 {
@@ -195,8 +185,6 @@ void ED_spacetype_userpref(void)
 	st->duplicate = userpref_duplicate;
 	st->operatortypes = userpref_operatortypes;
 	st->keymap = userpref_keymap;
-	//st->context = space_context;
-	//st->id_remap = userpref_id_remap;
 
 	/* regions: main window */
 	art = MEM_callocN(sizeof(ARegionType), "spacetype userpref region");

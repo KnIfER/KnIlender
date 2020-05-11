@@ -188,6 +188,7 @@ static void text_operatortypes(void)
 	WM_operatortype_append(TEXT_OT_save_as);
 	WM_operatortype_append(TEXT_OT_make_internal);
 	WM_operatortype_append(TEXT_OT_run_script);
+	WM_operatortype_append(TEXT_OT_expand_region_width);
 	WM_operatortype_append(TEXT_OT_refresh_pyconstraints);
 
 	WM_operatortype_append(TEXT_OT_paste);
@@ -305,6 +306,8 @@ static void text_keymap(struct wmKeyConfig *keyconf)
 	WM_keymap_add_item(keymap, "TEXT_OT_save_as", SKEY, KM_PRESS, KM_ALT | KM_SHIFT | KM_CTRL, 0);
 
 	WM_keymap_add_item(keymap, "TEXT_OT_run_script", PKEY, KM_PRESS, KM_ALT, 0);
+
+	WM_keymap_add_item(keymap, "TEXT_OT_expand_region_width", TABKEY, KM_PRESS, KM_CTRL, 0);
 	
 	WM_keymap_add_item(keymap, "TEXT_OT_cut", XKEY, KM_PRESS, KM_CTRL, 0);
 	WM_keymap_add_item(keymap, "TEXT_OT_copy", CKEY, KM_PRESS, KM_CTRL, 0);
